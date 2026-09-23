@@ -105,7 +105,11 @@ mod desktop {
                         }
                     }
 
-                    let now = if linked { Link::Connected } else { Link::Waiting };
+                    let now = if linked {
+                        Link::Connected
+                    } else {
+                        Link::Waiting
+                    };
                     if told != Some(now) {
                         told = Some(now);
                         report(now);
