@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { DiscordPresence, Link } from "./ports";
+import type { DiscordPresence, Doing, Link } from "./ports";
 
 /** What the player chose about Discord, kept beside the tasks (ADR 6). */
 export interface DiscordSettings {
@@ -32,15 +32,13 @@ export function readDiscordSettings(): DiscordSettings {
  *
  * The status follows the running task: whatever is being timed is what Discord shows, and
  * stopping clears it. Turning the setting off disconnects rather than going quiet, so
- * nothing is left behind in Discord.
+ * nothing of ours is left behind in Discord.
  */
-export function useDiscord(
-  presence: DiscordPresence,
-  doing: { task: string; startedAt: number } | undefined,
-) {
+export function useDiscord(presence: DiscordPresence, doing: Doing | undefined) {
   const [settings, setSettings] = useState<DiscordSettings>(readDiscordSettings);
+  const [reachable, setReachable] = useState<boolean>();
   const [link, setLink] = useState<Link>("off");
-  const connected = useRef<(() => void) | undefined>(undefined);
+  const stopListening = useRef<() => void>(undefined);
 
   const change = useCallback((changes: Partial<DiscordSettings>) => {
     setSettings((previous) => {
@@ -52,49 +50,53 @@ export function useDiscord(
     });
   }, []);
 
-  // Whether Discord is reachable at all decides whether the setting is even offered.
+  // Whether Discord can be reached at all decides whether the setting is even offered.
   useEffect(() => {
     let cancelled = false;
     void presence.possible().then((possible) => {
-      if (!cancelled && !possible) setLink("unavailable");
+      if (!cancelled) setReachable(possible);
     });
     return () => {
       cancelled = true;
     };
   }, [presence]);
 
-  useEffect(() => {
-    if (link === "unavailable") return;
+  const wanted = settings.on && settings.appId.trim() !== "";
 
-    let cancelled = false;
-    if (!settings.on || !settings.appId.trim()) {
-      connected.current?.();
-      connected.current = undefined;
+  useEffect(() => {
+    if (reachable !== true) return;
+
+    if (!wanted) {
       void presence.disconnect();
       setLink("off");
       return;
     }
 
+    let cancelled = false;
     setLink("waiting");
     void presence.connect(settings.appId.trim(), setLink).then((stop) => {
       if (cancelled) stop();
-      else connected.current = stop;
+      else stopListening.current = stop;
     });
 
     return () => {
       cancelled = true;
-      connected.current?.();
-      connected.current = undefined;
+      stopListening.current?.();
+      stopListening.current = undefined;
     };
-  }, [presence, settings.on, settings.appId, link === "unavailable"]);
+  }, [presence, reachable, wanted, settings.appId]);
 
   // What is running is what Discord shows, down to the instant it started (ADR 4).
   useEffect(() => {
-    if (link !== "connected" && link !== "waiting") return;
+    if (reachable !== true || !wanted) return;
 
     if (doing) void presence.show(doing);
     else void presence.clear();
-  }, [presence, doing, link]);
+  }, [presence, reachable, wanted, doing]);
 
-  return { settings, link, change };
+  return {
+    settings,
+    link: reachable === false ? ("unavailable" as const) : link,
+    change,
+  };
 }

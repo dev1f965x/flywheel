@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import "./design/base.css";
 import "./App.css";
 import { AddTask } from "./components/AddTask";
@@ -30,12 +31,15 @@ export default function App({ store, presence, now }: AppProps) {
   const { runningTask, runningSince } = flywheel;
 
   const elapsed = runningSince ? clock.getTime() - runningSince.getTime() : 0;
-  const discord = useDiscord(
-    presence,
-    runningTask && runningSince
-      ? { task: runningTask.name, startedAt: runningSince.getTime() }
-      : undefined,
+  // A new object every render would ask Discord again every second, so it is memoised.
+  const doing = useMemo(
+    () =>
+      runningTask && runningSince
+        ? { task: runningTask.name, startedAt: runningSince.getTime() }
+        : undefined,
+    [runningTask, runningSince],
   );
+  const discord = useDiscord(presence, doing);
 
   const row = (task: (typeof flywheel.tasks)[number]) => (
     <TaskRow
