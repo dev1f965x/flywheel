@@ -1,51 +1,95 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
+import "./design/base.css";
 import "./App.css";
+import { AddTask } from "./components/AddTask";
+import { DiscordCard } from "./components/DiscordCard";
+import { FlywheelMark } from "./components/FlywheelMark";
+import { TaskRow } from "./components/TaskRow";
+import { TodayBar } from "./components/TodayBar";
+import type { DiscordPresence } from "./discord/ports";
+import { useDiscord } from "./discord/useDiscord";
+import { APP_NAME, TASK_LABELS } from "./domain/labels";
+import { useNow } from "./shell/clock";
+import { useFlywheel } from "./state/useFlywheel";
+import type { Store } from "./storage/store";
 
-function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
-  return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
-  );
+export interface AppProps {
+  store: Store;
+  presence: DiscordPresence;
+  /** Fixed by tests; the app reads a ticking clock. */
+  now?: Date;
 }
 
-export default App;
+/**
+ * The whole app: what is running, what is left today, what was finished, and the line a
+ * new task is written on.
+ */
+export default function App({ store, presence, now }: AppProps) {
+  const ticking = useNow();
+  const clock = now ?? ticking;
+  const flywheel = useFlywheel(store, clock);
+  const { runningTask, runningSince } = flywheel;
+
+  const elapsed = runningSince ? clock.getTime() - runningSince.getTime() : 0;
+  const discord = useDiscord(
+    presence,
+    runningTask && runningSince
+      ? { task: runningTask.name, startedAt: runningSince.getTime() }
+      : undefined,
+  );
+
+  const row = (task: (typeof flywheel.tasks)[number]) => (
+    <TaskRow
+      key={task.id}
+      task={task}
+      today={flywheel.today}
+      spent={flywheel.spentOn(task.id)}
+      running={runningTask?.id === task.id}
+      elapsed={elapsed}
+      onToggleFinished={() => flywheel.toggleFinished(task.id)}
+      onStart={() => flywheel.startTask(task.id)}
+      onStop={flywheel.stopTask}
+      onRemove={() => flywheel.remove(task.id)}
+    />
+  );
+
+  return (
+    <div className="app">
+      <header className="app__bar">
+        <FlywheelMark turning={Boolean(runningTask)} />
+        <h1 className="app__name">{APP_NAME}</h1>
+        <span className="app__version">v{__APP_VERSION__}</span>
+      </header>
+
+      <main className="app__main">
+        <TodayBar spentToday={flywheel.spentToday} running={runningTask} elapsed={elapsed} />
+
+        <section aria-labelledby="due-heading">
+          <h2 className="app__heading" id="due-heading">
+            {TASK_LABELS.heading}
+          </h2>
+          {flywheel.due.length === 0 ? (
+            <div className="app__empty">
+              <p className="app__empty-title">{TASK_LABELS.empty}</p>
+              <p className="app__empty-detail">{TASK_LABELS.emptyDetail}</p>
+            </div>
+          ) : (
+            <ul className="app__list">{flywheel.due.map(row)}</ul>
+          )}
+        </section>
+
+        {flywheel.settled.length > 0 && (
+          <section aria-labelledby="done-heading">
+            <h2 className="app__heading" id="done-heading">
+              {TASK_LABELS.done}
+            </h2>
+            <ul className="app__list">{flywheel.settled.map(row)}</ul>
+          </section>
+        )}
+
+        <AddTask onAdd={flywheel.add} />
+
+        <DiscordCard link={discord.link} settings={discord.settings} onChange={discord.change} />
+      </main>
+    </div>
+  );
+}

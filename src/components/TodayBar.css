@@ -1,0 +1,62 @@
+.today {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-raised);
+  text-align: center;
+}
+
+.today__running {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--running);
+  font-size: var(--text-small);
+}
+
+.today__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--running);
+  animation: today-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes today-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--running) 55%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--running) 0%, transparent);
+  }
+}
+
+.today__name {
+  color: var(--text-strong);
+  overflow-wrap: anywhere;
+}
+
+.today__elapsed {
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-clock);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: var(--leading-title);
+}
+
+.today__idle,
+.today__total {
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.today__total {
+  margin-top: var(--space-1);
+  color: var(--text-faint);
+}
