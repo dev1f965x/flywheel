@@ -1,3 +1,4 @@
+/* One height, running or not, so starting a task never shoves the list down. */
 .today {
   display: flex;
   flex-direction: column;
@@ -10,17 +11,37 @@
   text-align: center;
 }
 
-.today__running {
+.today__label {
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.today__total {
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-clock);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: var(--leading-title);
+}
+
+.today[data-running="true"] .today__total {
+  color: var(--running);
+}
+
+.today__what {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--running);
+  color: var(--text-muted);
   font-size: var(--text-small);
+  overflow-wrap: anywhere;
 }
 
 .today__dot {
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: var(--running);
   animation: today-pulse 2.4s ease-in-out infinite;
@@ -34,29 +55,4 @@
   50% {
     box-shadow: 0 0 0 5px color-mix(in srgb, var(--running) 0%, transparent);
   }
-}
-
-.today__name {
-  color: var(--text-strong);
-  overflow-wrap: anywhere;
-}
-
-.today__elapsed {
-  color: var(--text-strong);
-  font-family: var(--font-mono);
-  font-size: var(--text-clock);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  line-height: var(--leading-title);
-}
-
-.today__idle,
-.today__total {
-  color: var(--text-muted);
-  font-size: var(--text-small);
-}
-
-.today__total {
-  margin-top: var(--space-1);
-  color: var(--text-faint);
 }

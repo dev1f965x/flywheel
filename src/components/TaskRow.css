@@ -1,12 +1,17 @@
 .task {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
+  flex-direction: column;
   padding: var(--space-3);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-medium);
   background: var(--surface-raised);
   box-shadow: var(--shadow-card);
+}
+
+.task__line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 /* The one being timed is the only lit thing in the list. */
@@ -19,12 +24,18 @@
   box-shadow: none;
 }
 
+.task[data-late="true"] {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Small marks, finger-sized targets: the app ships as a phone app too. */
 .task__check {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
+  margin-left: calc(var(--space-2) * -1);
   color: var(--text-faint);
   cursor: pointer;
 }
@@ -60,19 +71,46 @@
   min-width: 0;
 }
 
+/* The name is the title and the way to rename it, so it looks like a title until hovered. */
 .task__name {
+  max-width: 100%;
+  padding: 2px var(--space-1);
+  margin-left: calc(var(--space-1) * -1);
+  border-radius: var(--radius-small);
   color: var(--text-strong);
+  cursor: text;
   overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.task__name:hover {
+  background: var(--surface-sunken);
 }
 
 .task[data-finished="true"] .task__name {
   color: var(--text-muted);
+}
+
+/* Only a task that is over for good is struck through; a routine is coming back. */
+.task[data-finished="true"]:not(:has(.task__repeat)) .task__name {
   text-decoration: line-through;
+}
+
+.task__field {
+  width: 100%;
+  height: 34px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-small);
+  background: var(--surface-sunken);
+  color: var(--text-strong);
+  outline: none;
 }
 
 .task__about {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2);
   margin-top: 2px;
   color: var(--text-faint);
@@ -80,7 +118,21 @@
 }
 
 .task__repeat {
+  min-height: 28px;
+  padding: 0 var(--space-2);
+  margin-left: calc(var(--space-2) * -1);
+  border-radius: var(--radius-pill);
   color: var(--accent);
+  cursor: pointer;
+  font-size: var(--text-small);
+}
+
+.task__repeat:hover {
+  background: var(--accent-quiet);
+}
+
+.task__late {
+  color: var(--accent-strong);
 }
 
 .task__streak {
@@ -91,7 +143,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  height: 34px;
+  min-height: 44px;
   flex-shrink: 0;
   padding: 0 var(--space-3);
   border: 1px solid var(--border-strong);
@@ -120,9 +172,10 @@
 .task__remove {
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
+  margin-right: calc(var(--space-2) * -1);
   border-radius: 50%;
   color: var(--text-faint);
   cursor: pointer;
@@ -140,4 +193,10 @@
   stroke: currentColor;
   stroke-linecap: round;
   stroke-width: 1.6;
+}
+
+.task__repeat-picker {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
 }

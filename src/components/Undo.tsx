@@ -1,0 +1,29 @@
+import { useEffect } from "react";
+import { TASK_LABELS } from "../domain/labels";
+import "./Undo.css";
+
+interface Props {
+  message: string;
+  onUndo: () => void;
+  onDismiss: () => void;
+}
+
+/** How long a removed task can be brought back before the offer goes away. */
+const OFFERED_FOR_MS = 6000;
+
+/** The one thing that cannot be retyped: a routine and the days it was kept. */
+export function Undo({ message, onUndo, onDismiss }: Props) {
+  useEffect(() => {
+    const timer = setTimeout(onDismiss, OFFERED_FOR_MS);
+    return () => clearTimeout(timer);
+  }, [onDismiss]);
+
+  return (
+    <div className="undo" role="status">
+      <p className="undo__message">{message}</p>
+      <button type="button" className="undo__action" onClick={onUndo}>
+        {TASK_LABELS.undo}
+      </button>
+    </div>
+  );
+}

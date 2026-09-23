@@ -6,6 +6,7 @@ import { DiscordCard } from "./components/DiscordCard";
 import { FlywheelMark } from "./components/FlywheelMark";
 import { TaskRow } from "./components/TaskRow";
 import { TodayBar } from "./components/TodayBar";
+import { Undo } from "./components/Undo";
 import type { DiscordPresence } from "./discord/ports";
 import { useDiscord } from "./discord/useDiscord";
 import { APP_NAME, TASK_LABELS } from "./domain/labels";
@@ -49,6 +50,7 @@ export default function App({ store, presence, now }: AppProps) {
       spent={flywheel.spentOn(task.id)}
       running={runningTask?.id === task.id}
       elapsed={elapsed}
+      onEdit={(changes) => flywheel.edit(task.id, changes)}
       onToggleFinished={() => flywheel.toggleFinished(task.id)}
       onStart={() => flywheel.startTask(task.id)}
       onStop={flywheel.stopTask}
@@ -65,7 +67,9 @@ export default function App({ store, presence, now }: AppProps) {
       </header>
 
       <main className="app__main">
-        <TodayBar spentToday={flywheel.spentToday} running={runningTask} elapsed={elapsed} />
+        {(flywheel.tasks.length > 0 || flywheel.spentToday > 0) && (
+          <TodayBar spentToday={flywheel.spentToday} running={runningTask} />
+        )}
 
         <section aria-labelledby="due-heading">
           <h2 className="app__heading" id="due-heading">
@@ -92,8 +96,18 @@ export default function App({ store, presence, now }: AppProps) {
 
         <AddTask onAdd={flywheel.add} />
 
-        <DiscordCard link={discord.link} settings={discord.settings} onChange={discord.change} />
+        {discord.link && (
+          <DiscordCard link={discord.link} settings={discord.settings} onChange={discord.change} />
+        )}
       </main>
+
+      {flywheel.removed && (
+        <Undo
+          message={TASK_LABELS.removed(flywheel.removed.name)}
+          onUndo={flywheel.undoRemove}
+          onDismiss={flywheel.forgetRemoved}
+        />
+      )}
     </div>
   );
 }

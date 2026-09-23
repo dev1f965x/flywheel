@@ -96,7 +96,8 @@ export function useDiscord(presence: DiscordPresence, doing: Doing | undefined) 
 
   return {
     settings,
-    link: reachable === false ? ("unavailable" as const) : link,
+    /** Undefined until the answer is in, so the card never flashes the wrong state. */
+    link: reachable === undefined ? undefined : reachable ? link : ("unavailable" as const),
     change,
   };
 }
