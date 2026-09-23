@@ -1,0 +1,143 @@
+.task {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+/* The one being timed is the only lit thing in the list. */
+.task[data-running="true"] {
+  border-color: var(--running);
+}
+
+.task[data-finished="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+
+.task__check {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.task__check svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.task__check svg path {
+  visibility: hidden;
+}
+
+.task__check[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.task__check[aria-pressed="true"] svg path {
+  visibility: visible;
+}
+
+.task__check:hover {
+  color: var(--text-strong);
+}
+
+.task__what {
+  flex: 1;
+  min-width: 0;
+}
+
+.task__name {
+  color: var(--text-strong);
+  overflow-wrap: anywhere;
+}
+
+.task[data-finished="true"] .task__name {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.task__about {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: 2px;
+  color: var(--text-faint);
+  font-size: var(--text-small);
+}
+
+.task__repeat {
+  color: var(--accent);
+}
+
+.task__streak {
+  color: var(--text-muted);
+}
+
+.task__clock {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 34px;
+  flex-shrink: 0;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  color: var(--text-body);
+  cursor: pointer;
+  font-size: var(--text-small);
+}
+
+.task__clock:hover {
+  border-color: var(--accent);
+  color: var(--text-strong);
+}
+
+.task__clock--running {
+  border-color: var(--running);
+  color: var(--running);
+}
+
+.task__elapsed {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.task__remove {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.task__remove:hover {
+  background: var(--surface-sunken);
+  color: var(--text-strong);
+}
+
+.task__remove svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.6;
+}

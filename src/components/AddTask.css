@@ -1,0 +1,119 @@
+.add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-sunken);
+}
+
+.add__line {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.add__field {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface-base);
+  color: var(--text-strong);
+}
+
+.add__field::placeholder {
+  color: var(--text-faint);
+}
+
+.add__field:hover,
+.add__field:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.add__submit {
+  height: 42px;
+  flex-shrink: 0;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-small);
+  background: var(--accent);
+  color: var(--surface-base);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.add__submit:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.add__submit:disabled {
+  background: var(--surface-raised);
+  color: var(--text-faint);
+  cursor: default;
+}
+
+.add__repeat {
+  display: flex;
+  gap: var(--space-2);
+  border: none;
+  flex-wrap: wrap;
+}
+
+.add__kind {
+  height: 30px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--text-small);
+}
+
+.add__kind[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-quiet);
+  color: var(--accent-strong);
+}
+
+.add__weekdays {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.add__weekday {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--text-small);
+}
+
+.add__weekday[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-quiet);
+  color: var(--accent-strong);
+}
+
+.add__every {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.add__count {
+  width: 64px;
+  height: 34px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface-base);
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}

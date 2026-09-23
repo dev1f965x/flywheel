@@ -1,0 +1,35 @@
+.mark {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.mark__rim {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+
+.mark__hub {
+  fill: var(--accent);
+}
+
+.mark__spokes path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  stroke-width: 1.6;
+  opacity: 0.75;
+}
+
+/* The wheel turns only while something is being timed: the state is the decoration. */
+.mark[data-turning="true"] .mark__spokes {
+  transform-origin: 50% 50%;
+  animation: mark-turn 6s linear infinite;
+}
+
+@keyframes mark-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}

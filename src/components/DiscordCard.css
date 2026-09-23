@@ -1,0 +1,113 @@
+.discord {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-raised);
+}
+
+.discord__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.discord__heading {
+  color: var(--text-muted);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.discord__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-faint);
+  font-size: var(--text-small);
+}
+
+.discord__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.discord[data-link="connected"] .discord__dot {
+  background: var(--running);
+}
+
+.discord[data-link="waiting"] .discord__dot {
+  background: var(--accent);
+}
+
+.discord__switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-strong);
+  cursor: pointer;
+}
+
+.discord__switch input {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  margin: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  appearance: none;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.discord__switch input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.discord__switch input:checked {
+  border-color: var(--accent);
+  background: var(--accent-quiet);
+}
+
+.discord__switch input:checked::after {
+  background: var(--accent);
+  transform: translateX(18px);
+}
+
+.discord__id {
+  height: 38px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface-sunken);
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+}
+
+.discord__id:hover,
+.discord__id:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.discord__detail {
+  color: var(--text-faint);
+  font-size: var(--text-small);
+}
