@@ -50,8 +50,14 @@ export function useFlywheel(store: Store, now: Date) {
     [tasks, now, keepTasks],
   );
 
+  const [removed, setRemoved] = useState<{ task: Task; at: number }>();
+
   const remove = useCallback(
     (id: string) => {
+      const at = tasks.findIndex((task) => task.id === id);
+      if (at < 0) return;
+
+      setRemoved({ task: tasks[at], at });
       keepTasks(tasks.filter((task) => task.id !== id));
       // The hours stay: a session belongs to the day it happened, not to the task's fate.
       if (runningSession?.taskId === id) keepSessions(clock.stop(sessions, now));
@@ -59,15 +65,31 @@ export function useFlywheel(store: Store, now: Date) {
     [tasks, sessions, runningSession, now, keepTasks, keepSessions],
   );
 
-  const move = useCallback(
-    (id: string, by: number) => {
-      const at = tasks.findIndex((task) => task.id === id);
-      const to = at + by;
-      if (at < 0 || to < 0 || to >= tasks.length) return;
+  /** Puts a removed task back where it was, streak and all. */
+  const undoRemove = useCallback(() => {
+    setRemoved((last) => {
+      if (!last) return undefined;
+      keepTasks([...tasks.slice(0, last.at), last.task, ...tasks.slice(last.at)]);
+      return undefined;
+    });
+  }, [tasks, keepTasks]);
 
-      const next = [...tasks];
-      [next[at], next[to]] = [next[to], next[at]];
-      keepTasks(next);
+  const forgetRemoved = useCallback(() => setRemoved(undefined), []);
+
+  /** Changes a task's name or how it repeats, for what was written in a hurry. */
+  const edit = useCallback(
+    (id: string, changes: { name?: string; repeat?: Task["repeat"] }) => {
+      keepTasks(
+        tasks.map((task) => {
+          if (task.id !== id) return task;
+          const named = changes.name?.trim();
+          return {
+            ...task,
+            name: named && named !== "" ? named : task.name,
+            repeat: "repeat" in changes ? changes.repeat : task.repeat,
+          };
+        }),
+      );
     },
     [tasks, keepTasks],
   );
@@ -114,10 +136,19 @@ export function useFlywheel(store: Store, now: Date) {
     runningTask,
     runningSince: runningSession ? new Date(runningSession.from) : undefined,
     spentToday: clock.spentOn(sessions, today, now),
-    spentOn: (taskId: string) => clock.spentOnTask(sessions, taskId, now),
+    /** Today's time on one task, which is what a row under 오늘 할 일 should say. */
+    spentOn: (taskId: string) =>
+      clock.spentOn(
+        sessions.filter((session) => session.taskId === taskId),
+        today,
+        now,
+      ),
     add,
     remove,
-    move,
+    removed: removed?.task,
+    undoRemove,
+    forgetRemoved,
+    edit,
     toggleFinished,
     startTask,
     stopTask,

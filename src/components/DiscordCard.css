@@ -1,3 +1,10 @@
+/* Where Discord cannot be reached at all, the card is one quiet line, not a panel. */
+.discord[data-link="unavailable"] {
+  padding: var(--space-3) var(--space-4);
+  border-style: dashed;
+  background: transparent;
+}
+
 .discord {
   display: flex;
   flex-direction: column;

@@ -1,0 +1,74 @@
+.repeat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.repeat__kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Every control here is finger-sized: the app ships as a phone app too. */
+.repeat__kind {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--text-small);
+}
+
+.repeat__kind[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-quiet);
+  color: var(--accent-strong);
+}
+
+.repeat__ask {
+  margin-bottom: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.repeat__circles {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.repeat__weekday {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--text-small);
+}
+
+.repeat__weekday[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-quiet);
+  color: var(--accent-strong);
+}
+
+.repeat__every {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.repeat__count {
+  width: 68px;
+  height: 40px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface-base);
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}

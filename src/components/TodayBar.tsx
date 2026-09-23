@@ -1,5 +1,5 @@
-import { asClock, asSpan } from "../domain/clock";
-import { TASK_LABELS, TODAY_LABELS } from "../domain/labels";
+import { asClock } from "../domain/clock";
+import { TODAY_LABELS } from "../domain/labels";
 import type { Task } from "../domain/tasks";
 import "./TodayBar.css";
 
@@ -7,29 +7,24 @@ interface Props {
   /** Milliseconds the day adds up to, the running stretch included. */
   spentToday: number;
   running?: Task;
-  elapsed: number;
 }
 
-/** What the day amounts to so far, and what is being timed right now. */
-export function TodayBar({ spentToday, running, elapsed }: Props) {
+/** What the day amounts to so far, counting up while something is being timed. */
+export function TodayBar({ spentToday, running }: Props) {
   return (
-    <section className="today" aria-label={TODAY_LABELS.heading}>
-      {running ? (
-        <>
-          <p className="today__running">
+    <section className="today" data-running={Boolean(running)} aria-label={TODAY_LABELS.heading}>
+      <p className="today__label">{TODAY_LABELS.heading}</p>
+      <p className="today__total">{asClock(spentToday)}</p>
+      <p className="today__what">
+        {running ? (
+          <>
             <span className="today__dot" aria-hidden="true" />
-            {TASK_LABELS.running}
-          </p>
-          <p className="today__name">{running.name}</p>
-          <p className="today__elapsed">{asClock(elapsed)}</p>
-        </>
-      ) : (
-        <p className="today__idle">
-          {spentToday > 0 ? TODAY_LABELS.total(asSpan(spentToday)) : TODAY_LABELS.nothing}
-        </p>
-      )}
-
-      {running && <p className="today__total">{TODAY_LABELS.total(asSpan(spentToday))}</p>}
+            {TODAY_LABELS.doing(running.name)}
+          </>
+        ) : (
+          TODAY_LABELS.idle
+        )}
+      </p>
     </section>
   );
 }

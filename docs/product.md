@@ -18,8 +18,8 @@ friends what they are on.
 
 One list. Starting something starts the clock; the clock is what the day is made of.
 
-- **Tasks.** Written a line at a time, finished with a tap, deleted, and reordered by
-  hand. A task carries the time already spent on it.
+- **Tasks.** Written a line at a time, finished with a tap, renamed in place, and deleted
+  with the offer to undo. A task carries the time spent on it today.
 - **Routines.** A task can repeat: every day, on chosen weekdays, or every N days.
   Finishing it schedules the next one instead of removing it, and the days it was kept in
   a row are counted.
@@ -72,5 +72,5 @@ One list. Starting something starts the clock; the clock is what the day is made
 | Version | Adds |
 |---|---|
 | 1.0.0 | Tasks, routines, the clock, Discord on the desktop, on web, Windows, and Android |
-| 1.1.0 | A week's worth of totals, and editing a session that was left running too long |
+| 1.1.0 | A week's worth of totals, reordering the list, and editing a session left running |
 | later | Tags, if the flat list proves too flat |

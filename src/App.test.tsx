@@ -69,7 +69,7 @@ describe("App", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "시작" }));
 
-    expect(screen.getByText("하는 중")).toBeInTheDocument();
+    expect(screen.getByText("하는 중 · 논문 읽기")).toBeInTheDocument();
     expect(written.sessions).toHaveLength(1);
     expect(written.sessions[0].until).toBeUndefined();
   });
@@ -119,7 +119,7 @@ describe("App", () => {
     ];
     open([task()], sessions);
 
-    expect(screen.getByText("합계 45분")).toBeInTheDocument();
+    expect(screen.getByText("45:00")).toBeInTheDocument();
   });
 
   it("says Discord is out of reach where it is", async () => {
