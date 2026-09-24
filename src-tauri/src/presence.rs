@@ -71,12 +71,7 @@ mod desktop {
             let held = wanted.clone();
 
             std::thread::spawn(move || {
-                // A client that cannot even be built means an id nobody can use; the
-                // window is told it is waiting, which is what it looks like from there.
-                let Ok(mut client) = DiscordIpcClient::new(&app_id) else {
-                    report(Link::Waiting);
-                    return;
-                };
+                let mut client = DiscordIpcClient::new(&app_id);
                 let mut linked = false;
                 let mut told: Option<Link> = None;
 
