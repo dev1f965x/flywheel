@@ -161,7 +161,7 @@ function daysLate(task: Task, today: Day): number {
   return days;
 }
 
-/** When a finished routine comes back, said the way a person would say it. */
+/** When a finished routine comes back, in the words used on screen. */
 function comingBack(task: Task): string {
   if (!task.repeat) return "";
   if (task.repeat.every === "day") return REPEAT_LABELS.tomorrow;

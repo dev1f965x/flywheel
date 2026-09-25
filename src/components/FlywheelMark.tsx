@@ -5,7 +5,7 @@ interface Props {
   turning?: boolean;
 }
 
-/** The app's mark: a spoked wheel, brass on gunmetal, that spins while the clock runs. */
+/** The app's mark: a spoked wheel, which turns while the clock runs. */
 export function FlywheelMark({ turning = false }: Props) {
   return (
     <svg

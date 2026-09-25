@@ -58,7 +58,7 @@ export function finish(task: Task, on: Day): Task {
   return { ...task, finished, due: nextDue(task.repeat, on) };
 }
 
-/** Undoes a finish, for the tap that was meant for the task below. */
+/** Undoes a finish, for a tap on the wrong row. */
 export function unfinish(task: Task, on: Day): Task {
   const finished = task.finished.filter((day) => day !== on);
   if (!task.repeat) return { ...task, finished, done: false };
@@ -86,7 +86,7 @@ export function isDue(task: Task, today: Day): boolean {
   return !task.done && task.due <= today;
 }
 
-/** Whether it was already finished today, which is what a routine shows instead of gone. */
+/** Whether it was already finished today, which is how a routine shows as done. */
 export function isFinishedOn(task: Task, day: Day): boolean {
   return task.finished.includes(day);
 }

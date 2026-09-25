@@ -11,7 +11,7 @@ interface Props {
 /** How long a removed task can be brought back before the offer goes away. */
 const OFFERED_FOR_MS = 6000;
 
-/** The one thing that cannot be retyped: a routine and the days it was kept. */
+/** A removed routine cannot be retyped, since its streak goes with it. */
 export function Undo({ message, onUndo, onDismiss }: Props) {
   useEffect(() => {
     const timer = setTimeout(onDismiss, OFFERED_FOR_MS);

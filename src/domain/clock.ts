@@ -55,7 +55,7 @@ export function today(now: Date): Day {
   return dayOf(now);
 }
 
-/** `1:04:09` while it runs, `4분` once it is over: precise where it is moving. */
+/** `1:04:09` while it runs, to the second, since it is changing. */
 export function asClock(milliseconds: number): string {
   const total = Math.floor(milliseconds / 1000);
   const hours = Math.floor(total / 3600);
@@ -64,7 +64,7 @@ export function asClock(milliseconds: number): string {
   return hours > 0 ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
 }
 
-/** How long something took, in the words a person would use. */
+/** How long something took, rounded to the unit it reads best in. */
 export function asSpan(milliseconds: number): string {
   if (milliseconds < 60_000) return "1분 미만";
 

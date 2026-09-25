@@ -59,19 +59,19 @@
   <img src="docs/app.png" alt="A task running, with the day's total" width="340">
 </div>
 
-Three habits, three apps: a to-do list that knows what should be done, a timer that knows
-how long it took, and a routine tracker that knows what repeats. None of them knows the
-others, so the day gets written down three times and measured none.
+Three habits, three apps: a to-do list holding what should be done, a timer holding how
+long it took, and a routine tracker holding what repeats. None of them knows the others,
+so the day is written down three times and measured in none of them.
 
 flywheel is the one list.
 
 - **Tasks** are written a line at a time and finished with a tap.
-- **Routines** are tasks that repeat — every day, on chosen weekdays, or every N days.
+- **Routines** are tasks that repeat: every day, on chosen weekdays, or every N days.
   Finishing one schedules the next, and the days kept in a row are counted.
-- **The clock** starts when a task starts. One runs at a time, and everything is worked out
-  from the instants involved, so a closed window, a sleeping laptop, and a reboot cost
-  nothing.
-- **Discord** shows what is running, counted from when it started — on the desktop build,
+- **The clock** starts when a task starts. One runs at a time, and everything is derived
+  from the instants recorded, so a closed window, a sleeping laptop and a reboot make no
+  difference.
+- **Discord** shows what is running, counted from when it started, on the desktop build,
   which is the only place Rich Presence can reach.
 - Everything stays on the device. No account, no sync, no analytics.
 

@@ -21,10 +21,7 @@ export interface AppProps {
   now?: Date;
 }
 
-/**
- * The whole app: what is running, what is left today, what was finished, and the line a
- * new task is written on.
- */
+/** The whole app: what is running, what is left today, what was finished, and the input. */
 export default function App({ store, presence, now }: AppProps) {
   const ticking = useNow();
   const clock = now ?? ticking;
