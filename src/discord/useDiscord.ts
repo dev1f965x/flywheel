@@ -30,9 +30,8 @@ export function readDiscordSettings(): DiscordSettings {
 /**
  * Keeps Discord told, and says how the connection stands.
  *
- * The status follows the running task: whatever is being timed is what Discord shows, and
- * stopping clears it. Turning the setting off disconnects rather than going quiet, so
- * nothing of ours is left behind in Discord.
+ * The status follows the running task, and stopping clears it. Turning the setting off
+ * disconnects rather than going quiet, so no status is left behind in Discord.
  */
 export function useDiscord(presence: DiscordPresence, doing: Doing | undefined) {
   const [settings, setSettings] = useState<DiscordSettings>(readDiscordSettings);

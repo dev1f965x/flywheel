@@ -16,7 +16,7 @@ export const TASK_LABELS = {
   emptyDetail: "아래에 적으면 바로 시작할 수 있어요",
   firstRun: "무엇부터 할까요",
   done: "끝낸 일",
-  /** Said from the second day: one day in a row is just today. */
+  /** Shown from the second day; one day in a row is just today. */
   streak: (days: number) => `${days}일 연속`,
   spent: (span: string) => `오늘 ${span}`,
   spentBriefly: "오늘 1분 미만",

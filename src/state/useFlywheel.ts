@@ -136,7 +136,7 @@ export function useFlywheel(store: Store, now: Date) {
     runningTask,
     runningSince: runningSession ? new Date(runningSession.from) : undefined,
     spentToday: clock.spentOn(sessions, today, now),
-    /** Today's time on one task, which is what a row under 오늘 할 일 should say. */
+    /** Today's time on one task, which is what its row shows. */
     spentOn: (taskId: string) =>
       clock.spentOn(
         sessions.filter((session) => session.taskId === taskId),

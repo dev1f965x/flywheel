@@ -2,21 +2,19 @@
 
 ## Problem
 
-Three habits, three apps. The to-do list knows what should be done; the timer knows how
-long things took; the routine tracker knows what repeats. None of them knows the others,
-so the day is written down three times and measured none.
-
-And the part that keeps a person at a task is often none of those: it is someone noticing.
+Three habits, three apps. The to-do list holds what should be done, the timer holds how
+long things took, and the routine tracker holds what repeats. None of them knows the
+others, so the day is written down three times and measured in none of them.
 
 ## Who it is for
 
-Someone who works alone at a desk — studying, building, practising — and wants one place
-that holds what to do today, keeps the clock while they do it, and quietly tells their
-friends what they are on.
+Someone working alone at a desk who wants one place that holds what to do today, keeps the
+clock while they do it, and shows their friends what they are on.
 
 ## 1.0.0 scope
 
-One list. Starting something starts the clock; the clock is what the day is made of.
+One list. Starting a task starts the clock, and the day is the sum of what the clock
+recorded.
 
 - **Tasks.** Written a line at a time, finished with a tap, renamed in place, and deleted
   with the offer to undo. A task carries the time spent on it today.
@@ -56,7 +54,7 @@ One list. Starting something starts the clock; the clock is what the day is made
   the whole model; the rest is how a to-do app becomes a project manager.
 - No accounts, no sync between phone and desktop, no sharing.
 - No Discord bot, no posting to channels, and no token: the desktop build talks to the
-  Discord app already running on the same machine, which is what Rich Presence is for.
+  Discord app already running on the same machine, which is what Rich Presence does.
 - No charts in 1.0.0. The day's total is a number, not a dashboard.
 
 ## Non-functional requirements
