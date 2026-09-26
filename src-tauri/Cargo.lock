@@ -864,7 +864,7 @@ dependencies = [
 
 [[package]]
 name = "flywheel"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "discord-rich-presence",
  "serde",
