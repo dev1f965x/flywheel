@@ -1,6 +1,6 @@
 [package]
 name = "flywheel"
-version = "1.0.0"
+version = "1.0.1"
 description = "A to-do list that keeps time, and tells Discord"
 authors = ["dev1f965x"]
 edition = "2021"
